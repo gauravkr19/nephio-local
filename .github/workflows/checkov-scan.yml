@@ -32,11 +32,12 @@ jobs:
       - name: _Run Checkov Scan (JSON)
         run: |
           echo "PWD: $(pwd)"
-          ls -l
-          ../ls
+          ls -la
           SKIP_PATHS=$(find . -type d -iname "*test*" | sed 's/^/--skip-path /' | tr '\n' ' ')
           echo "Using SKIP_PATHS: $SKIP_PATHS"
-          checkov -d . $SKIP_PATHS --output json > /.github/checkov-scan/checkov_raw_report.json || true
+          checkov -d . $SKIP_PATHS \
+          --skip-path ./.github/checkov-scan/checkov_raw_report.json
+          --output json > ./.github/checkov-scan/checkov_raw_report.json || true
 
       ### Step 3: Build and Run Go code to enrich severity
       - name: _Set up Go
@@ -50,7 +51,7 @@ jobs:
           go build -o enrich-severity main.go
 
       - name: _Run Severity Enricher
-        run: ./.github/checkov-scan/enrich-severity -input checkov_raw_report.json -map .github/checkov-scan/severity_map.json -output checkov_enriched.json
+        run: ./.github/checkov-scan/enrich-severity -input ./.github/checkov-scan/checkov_raw_report.json -map .github/checkov-scan/severity_map.json -output checkov_enriched.json
 
       ### Step 4: Use jq to generate filtered report
       - name: Generate Final Checkov Report using jq
