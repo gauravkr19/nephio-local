@@ -36,7 +36,7 @@ jobs:
           SKIP_PATHS=$(find . -type d -iname "*test*" | sed 's/^/--skip-path /' | tr '\n' ' ')
           echo "Using SKIP_PATHS: $SKIP_PATHS"
           checkov -d . $SKIP_PATHS \
-          --skip-path ./.github/checkov-scan/checkov_raw_report.json
+          --skip-path ./.github/checkov-scan/checkov_raw_report.json \
           --output json > ./.github/checkov-scan/checkov_raw_report.json || true
 
       ### Step 3: Build and Run Go code to enrich severity
