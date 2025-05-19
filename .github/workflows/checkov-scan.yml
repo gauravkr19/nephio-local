@@ -32,9 +32,11 @@ jobs:
       - name: _Run Checkov Scan (JSON)
         run: |
           echo "PWD: $(pwd)"
+          ls -l
+          ../ls
           SKIP_PATHS=$(find . -type d -iname "*test*" | sed 's/^/--skip-path /' | tr '\n' ' ')
           echo "Using SKIP_PATHS: $SKIP_PATHS"
-          checkov -d . $SKIP_PATHS --output json > checkov_raw_report.json || true
+          checkov -d . $SKIP_PATHS --output json > /.github/checkov-scan/checkov_raw_report.json || true
 
       ### Step 3: Build and Run Go code to enrich severity
       - name: _Set up Go
