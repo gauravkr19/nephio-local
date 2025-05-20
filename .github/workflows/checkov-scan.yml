@@ -16,7 +16,7 @@ jobs:
     steps:
       ### Step 1: Checkout Repo
       - name: _Checkout PR Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       ### Step 2: Run Checkov Scan 
       - name: Set up Python
